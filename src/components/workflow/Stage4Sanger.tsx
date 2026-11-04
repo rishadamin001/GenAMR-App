@@ -1,0 +1,88 @@
+import { useState } from "react";
+import { Ab1ChromatogramCanvas } from "./Ab1ChromatogramCanvas";
+import { primers } from "@/lib/bioinformatics/sanger-ab1-simulator";
+import { decide } from "@/lib/bioinformatics/reflex-decision-engine";
+import type { StageProps } from "./Stage1Collect";
+export function Stage4Sanger({ sample: s, update }: StageProps) {
+  const [locus, setLocus] = useState<"gyrA" | "parC">("gyrA");
+  const [zoom, setZoom] = useState(1);
+  return (
+    <section className="card">
+      <div className="section-label">04 / TARGETED SEQUENCE RESOLUTION</div>
+      <h2>One base can change the answer.</h2>
+      {!decide(s).reflex && (
+        <div className="callout">
+          No sequencing ordered for this case. The viewer below is a research
+          simulation only.
+        </div>
+      )}
+      <div className="actions">
+        <label>
+          Target locus
+          <select
+            value={locus}
+            onChange={(e) => setLocus(e.target.value as "gyrA" | "parC")}
+          >
+            <option value="gyrA">gyrA QRDR · codons 80–90</option>
+            <option value="parC">parC QRDR · codons 76–86</option>
+          </select>
+        </label>
+        <label>
+          Horizontal zoom
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step=".25"
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+          />
+        </label>
+      </div>
+      <p className="primer">{primers[locus]}</p>
+      <Ab1ChromatogramCanvas
+        locus={locus}
+        mutations={s.mutations}
+        zoom={zoom}
+      />
+      <div className="mutation-grid">
+        {[
+          ["S83L", "gyrA · codon 83", "TCG → TTG", "Serine → Leucine"],
+          ["D87N", "gyrA · codon 87", "GAC → AAC", "Aspartate → Asparagine"],
+          ["S80I", "parC · codon 80", "AGC → ATC", "Serine → Isoleucine"],
+          [
+            "G238S",
+            "β-lactamase allele",
+            "G238S",
+            "ESBL-associated substitution",
+          ],
+        ].map(([mutation, title, codon, note]) => (
+          <label className="mutation" key={mutation}>
+            <input
+              aria-label={`Toggle ${mutation}`}
+              type="checkbox"
+              checked={s.mutations.includes(mutation)}
+              onChange={(e) =>
+                update({
+                  mutations: e.target.checked
+                    ? [...s.mutations, mutation]
+                    : s.mutations.filter((m) => m !== mutation),
+                })
+              }
+            />
+            <strong>
+              {title} / {mutation}
+            </strong>
+            <code>{codon}</code>
+            <small>{note}</small>
+          </label>
+        ))}
+      </div>
+      <div className="callout">
+        Wild-type reference: gyrA 83 TCG · gyrA 87 GAC · parC 80 AGC. SHV
+        without G238S is a demo narrow-spectrum allele call, not full allele
+        identification.
+      </div>
+    </section>
+  );
+}
