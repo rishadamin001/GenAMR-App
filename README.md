@@ -1,29 +1,99 @@
 # GenAMR
+### Rapid AMR workflow research demo for Bangladesh
 
-An offline-capable Bangladesh AMR ideathon research demonstration built with Next.js 16, React 19, TypeScript and Tailwind v4. No paid APIs, API keys, server inference, cron jobs or cloud resources are required.
+GenAMR demonstrates how qPCR screening, selective Sanger sequencing, and an interpretation layer could support an antimicrobial resistance (AMR) testing workflow. Explore six interactive clinical archetypes and 60 historical synthetic isolates through a responsive lab and bedside interface.
 
-## Run
+**[Open the live demo](https://genamr-app.vercel.app)** · **[Demo walkthrough](docs/demo-guide.md)** · **[Documentation](docs/README.md)** · **[Contributing](CONTRIBUTING.md)**
 
-Node 20.9+ (Node 24 recommended). `npm ci`, `npm run dev`. Production: `npm run build`, `npm run start`. Check: `npm run typecheck`, `npm test`, `npm run test:e2e` (install Chromium with `npx playwright install chromium`).
+> **Research demonstration — synthetic data only.** GenAMR is not a validated diagnostic service or treatment recommendation. Conventional phenotypic AST remains the clinical confirmation. Scores and retraining are deterministic simulations, not measured clinical performance.
 
-Six interactive archetypes and 60 deterministic historical fixtures feed five workflow screens, Sanger canvas traces, a 16-drug illustrative matrix, local AST reconciliation and eight-division surveillance exports. Browser storage retains mutations, confirmations and simulated model versions. Installed service workers cache visited assets for offline use after an initial online visit.
+## What you can explore
 
-## Scientific scope
+| Workflow | Interactive features |
+| --- | --- |
+| **1. Collect** | Synthetic sample intake, specimen label and collection timeline |
+| **2. qPCR** | 40-cycle amplification curves, target toggles and Ct controls |
+| **3. Decide** | Fast-track versus targeted-reflex routing, illustrative fees and turnaround |
+| **4. Sanger** | Four-color canvas chromatograms and QRDR mutation toggles |
+| **5. Report** | Empirical-therapy mismatch alerts, 16-drug illustrative matrix and printable report |
+| **Validation** | Phenotypic AST reconciliation and simulated model-version updates |
+| **Surveillance** | Eight-division synthetic summaries and CSV/JSON exports |
 
-**Synthetic research demo only; not a validated diagnostic service, clinical model, or treatment recommendation.** No calibrated ML model is claimed. S labels reflect illustrative scenario mappings, not proof of susceptibility from absence of a resistance gene. Confirm with phenotypic AST. No measured confidence, reduction in error rates, mortality impact, partnership validation or exact turnaround benefit is claimed. The app intentionally does not reproduce unsupported claims of validation, national epidemiological estimates, or treatment safety. The displayed primers and flanking sequences are not a laboratory protocol. Chromatograms are generated arrays, not real ABIF file decoding.
+The app includes desktop and mobile layouts, English/Bangla key labels, BDT/USD pricing, persona controls, local persistence and an installable PWA. Visited assets become available offline after an initial online visit.
 
-Sources for future expert curation: [EUCAST expert rules](https://www.eucast.org/bacteria/important-additional-information/expert-rules/), [CARD](https://card.mcmaster.ca/), [ResFinder](https://github.com/genomicepidemiology/resfinder). The prototype is not a complete implementation of EUCAST v13.1, CARD, ResFinder or PointFinder. Colistin, combination therapy, infection-site restrictions and organism-specific breakpoints require specialist review.
+## Try the demo
 
-## Data and cloud boundary
+1. Open the [live app](https://genamr-app.vercel.app) and choose a case in the scenario controller.
+2. Compare **GAMR-BD-001** (fast track; ৳1,200) with **GAMR-BD-002** (Sanger reflex; ৳2,050).
+3. Change a qPCR target or Sanger mutation and inspect the updated report.
+4. Explore validation and surveillance using the synthetic records.
 
-`src/lib/data/genamr-store.ts` works with memory and localStorage without configuration. Optional `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` enable authenticated, owner-scoped normalized record uploads and a restorable snapshot via `ml_model_versions`. No secret/service-role keys belong in the browser. The eight normalized tables are supplied in `supabase/migrations/20261104000001_genamr_schema.sql`; the optional connection form signs in an existing research account and uploads synthetic records. The Sync status control retries uploads. A cloud snapshot is published only after all normalized batches succeed; uploads are idempotent, but not a cross-table transaction. Live cloud verification requires a configured project.
+See the [six-case walkthrough](docs/demo-guide.md) for more examples.
 
-Anonymous visitors can only read reference tables. Signed-in owners can read/insert/update their own samples, child assays and model snapshots. Delete privileges are withheld; owner changes fail RLS checks. No hospital-wide sharing is implied by the persona selector. Migration is additive for a fresh project; inspect drift before applying to an existing database. Roll back the app independently; preserve data and use a forward migration for schema correction rather than destructive reset. Live RLS tests are required before enabling cloud writes for a real deployment.
+## Run locally
 
-## Zero-cost deployment
+Use Node.js 20.9 or newer; Node.js 24 is recommended.
 
-Deploy the repository to an existing Vercel Hobby account with framework Next.js and no environment variables for local mode. Do not enable paid add-ons. Free-tier availability and limits are account-controlled; this repository cannot guarantee provider billing settings. Supabase is optional and no project is automatically provisioned. CSV/JSON exports are synthetic planning exports, not certified WHO GLASS/IEDCR submission formats.
+```bash
+git clone https://github.com/rishadamin001/GenAMR-App.git
+cd GenAMR-App
+npm ci
+npm run dev
+```
 
-## Verification limits
+Open **http://127.0.0.1:3000**. No environment variables, paid APIs or cloud account are needed for local mode.
 
-Unit tests cover Ct boundaries, reflex fees, QC holds, mutation effects and unpopulated metrics. Playwright covers desktop 1440×900 and mobile emulation 390×844, workflow switching, mutations, retraining simulation, exports and console errors. Neither tests nor the deterministic model establish clinical performance. Actual browser and deployment results are recorded after execution.
+For a production build:
+
+```bash
+npm run build
+npm run start
+```
+
+## Technology and project layout
+
+**Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · Recharts · HTML5 Canvas · optional Supabase**
+
+```text
+src/
+  app/                 Next.js pages, styles and PWA manifest
+  components/          Workflow, layout, validation and surveillance UI
+  lib/
+    bioinformatics/    Deterministic qPCR, reflex, Sanger and interpretation engines
+    data/              Local-first repository and optional cloud synchronization
+    seed/              Synthetic Bangladesh AMR fixtures
+public/                PWA assets
+supabase/migrations/   Eight-table PostgreSQL schema and access policies
+tests/                 Engine tests and desktop/mobile browser tests
+docs/                  Guides, architecture, scope and verification evidence
+```
+
+## Data and deployment
+
+The default store uses memory and browser localStorage. Optional Supabase integration uses authenticated, owner-scoped uploads; see the [data and scientific scope guide](docs/data-and-scientific-scope.md) and [backend plan](docs/backend-plan.md) before enabling it. Live Supabase synchronization and RLS checks have not been verified against a connected project.
+
+The [live demo](https://genamr-app.vercel.app) runs on Vercel. The current deployment was uploaded directly; **GitHub pushes do not automatically deploy** until the Vercel GitHub integration is connected. Local mode requires no paid services, cron jobs or cloud add-ons. Provider free-tier limits and account billing settings still apply.
+
+## Verification
+
+```bash
+npm run typecheck
+npm test
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
+
+The latest recorded verification passed **10 engine tests** and **4 browser tests**, including desktop (1440 × 900) and mobile (390 × 844) flows. Live production smoke tests also passed. These are software checks, not evidence of diagnostic accuracy.
+
+Read the [verification record](docs/verification.md) for results and limitations.
+
+## Documentation
+
+- [Documentation index](docs/README.md) — find the right guide
+- [Demo walkthrough](docs/demo-guide.md) — six scenarios and interactive checks
+- [Implementation scope](docs/implementation-scope.md) — implemented behavior and boundaries
+- [Backend plan](docs/backend-plan.md) — schema, access model and synchronization
+- [Data and scientific scope](docs/data-and-scientific-scope.md) — research limitations and cloud setup
+- [Verification record](docs/verification.md) — build, test and deployment evidence
+- [Contributing](CONTRIBUTING.md) — development and review expectations
