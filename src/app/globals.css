@@ -1294,6 +1294,220 @@ details > ul {
   font-size: 10px;
   margin: 10px 0 18px;
 }
+
+.sanger-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.sanger-workspace > * {
+  min-width: 0;
+}
+.reference-panel {
+  border-top: 3px solid #16977d;
+}
+.reference-panel .section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reference-panel h2 {
+  font-size: 21px;
+}
+.reference-panel p {
+  line-height: 1.65;
+}
+.reference-source {
+  background: #eff7f4;
+  border-radius: 8px;
+  padding: 14px;
+  margin: 18px 0;
+}
+.reference-source strong {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.reference-source small,
+.reference-record small {
+  display: block;
+  margin-top: 7px;
+  color: #536f65;
+  font-size: 10px;
+}
+.reference-record {
+  display: grid;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.reference-record strong {
+  font-size: 12px;
+}
+.reference-panel a {
+  color: #086c58;
+  text-decoration: underline;
+  font-size: 11px;
+}
+.reference-panel a svg {
+  display: inline;
+}
+.reference-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 20px 0;
+}
+.reference-metrics > div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 5px;
+  text-align: center;
+}
+.reference-metrics strong {
+  display: block;
+  font-size: 22px;
+  color: #18564b;
+}
+.reference-metrics small {
+  display: block;
+  font-size: 9px;
+  margin-top: 6px;
+}
+.alignment-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.base-alignment {
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+}
+.base-alignment caption {
+  caption-side: bottom;
+  text-align: left;
+  font-size: 9px;
+  padding: 10px;
+}
+.base-alignment th,
+.base-alignment td {
+  padding: 7px 4px;
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+.base-alignment th:first-child {
+  padding: 7px;
+  text-align: left;
+}
+.base-alignment button {
+  display: block;
+  font: 12px monospace;
+  padding: 8px 2px;
+}
+.base-alignment code {
+  font-size: 12px;
+}
+.base-difference {
+  background: #ffe0a0;
+  color: #713d00;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  font-weight: 800;
+}
+.base-unresolved {
+  background: #e6e8ed;
+  border-bottom: 2px dotted #555;
+}
+.focused-codon {
+  background: #ccece4;
+  outline: 1px solid #16836a;
+  outline-offset: -2px;
+}
+.reference-note {
+  font-size: 10px !important;
+  color: #587168;
+  margin: 14px 0;
+}
+.difference-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 17px 0;
+  font-size: 12px;
+  cursor: pointer;
+}
+.codon-results {
+  max-height: 330px;
+  overflow-y: auto;
+}
+.codon-results details {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 6px;
+}
+.codon-results summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.codon-results summary strong::before {
+  content: "+ ";
+}
+.codon-results details[open] summary strong::before {
+  content: "− ";
+}
+.codon-results summary small {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  color: #526a61;
+}
+.codon-results .codon-difference {
+  background: #fffbef;
+  border-left: 3px solid #d99b28;
+}
+.reference-jump {
+  text-decoration: underline;
+  color: #086c58;
+  font-size: 11px;
+  padding: 8px 0;
+}
+.reference-export {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #b5d6ca;
+  border-radius: 7px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  color: #086c58;
+  font-size: 12px;
+}
+.reference-export:hover {
+  background: #eff7f4;
+}
+.trace-selection {
+  padding: 9px 12px;
+  background: #e6f4ee;
+  border-radius: 5px;
+  font-size: 11px;
+}
+@media (max-width: 1100px) {
+  .sanger-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .reference-metrics strong {
+    font-size: 20px;
+  }
+}
 table {
   width: 100%;
   font-size: 11px;

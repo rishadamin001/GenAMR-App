@@ -1,0 +1,257 @@
+{
+  "database": "PointFinder",
+  "license": "Apache-2.0",
+  "retrievedOn": "2026-11-10",
+  "source": "https://bitbucket.org/genomicepidemiology/pointfinder_db/src/44ce624a806c6d2b70f7e39841a5f9cb4d9010aa",
+  "records": [
+    {
+      "accession": "CP073768.1",
+      "annotationPath": "escherichia_coli/resistens-overview.txt",
+      "id": "escherichia_coli-gyrA",
+      "startCodon": 80,
+      "annotations": [
+        {
+          "drugs": "Ciprofloxacin",
+          "alternateAA": ["C", "D"],
+          "referenceAA": "G",
+          "pmids": "2168148,8392306",
+          "note": "G81D mutation confers resistance to ciprofloxacin only. If G81D and D82G are present simultaneously, there is also nalidixic acid resistance",
+          "requires": "",
+          "position": 81,
+          "referenceCodon": "GGT"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["C", "D"],
+          "referenceAA": "G",
+          "pmids": "2168148,8392306",
+          "note": "G81D mutation confers resistance to ciprofloxacin only. If G81D and D82G are present simultaneously, there is also nalidixic acid resistance",
+          "requires": "gyrA_D82G",
+          "position": 81,
+          "referenceCodon": "GGT"
+        },
+        {
+          "drugs": "Ciprofloxacin",
+          "alternateAA": ["G"],
+          "referenceAA": "D",
+          "pmids": "8980760",
+          "note": "D82G mutation confers resistance to ciprofloxacin only. If D82G and G81D are present simultaneously, there is also nalidixic acid resistance",
+          "requires": "",
+          "position": 82,
+          "referenceCodon": "GAC"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["G"],
+          "referenceAA": "D",
+          "pmids": "8980760",
+          "note": "D82G mutation confers resistance to ciprofloxacin only. If D82G and G81D are present simultaneously, there is also nalidixic acid resistance",
+          "requires": "gyrA_G81D",
+          "position": 82,
+          "referenceCodon": "GAC"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["L", "W", "A", "V"],
+          "referenceAA": "S",
+          "pmids": "8891148,2168148,12654733,12654733",
+          "note": "",
+          "requires": "",
+          "position": 83,
+          "referenceCodon": "TCG"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["P", "V"],
+          "referenceAA": "A",
+          "pmids": "11451702,7840592",
+          "note": "Unknown phenotype if A84P or A84V occur alone. Nalidixic acid and ciprofloxacin resistance when associated with other gyrA mutations",
+          "requires": "gyrA_S83L.W.A.V",
+          "position": 84,
+          "referenceCodon": "GCG"
+        },
+        {
+          "drugs": "Nalidixic acid",
+          "alternateAA": ["N", "G", "Y", "A", "H", "V"],
+          "referenceAA": "D",
+          "pmids": "12654733,12654733,12654733,22878251,12654733,1850972",
+          "note": "D87G or D87Y confer resistance to nalidixic acid only, if occurring alone. Unknown phenotype if D87H occurs alone",
+          "requires": "",
+          "position": 87,
+          "referenceCodon": "GAC"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["N", "G", "Y", "A", "H", "V"],
+          "referenceAA": "D",
+          "pmids": "12654733,12654733,12654733,22878251,12654733,1850972",
+          "note": "D87G or D87Y confer resistance to nalidixic acid only, if occurring alone. Unknown phenotype if D87H occurs alone",
+          "requires": "gyrA_S83L.W.A.V",
+          "position": 87,
+          "referenceCodon": "GAC"
+        }
+      ],
+      "sequence": "CATGGTGACTCGGCGGTCTATGACACGATCGTC",
+      "locus": "gyrA",
+      "sourcePath": "escherichia_coli/gyrA.fsa",
+      "species": "Escherichia coli"
+    },
+    {
+      "accession": "CP084529.1",
+      "annotationPath": "escherichia_coli/resistens-overview.txt",
+      "id": "escherichia_coli-parC",
+      "startCodon": 76,
+      "annotations": [
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["D", "C"],
+          "referenceAA": "G",
+          "pmids": "8851598,14510643",
+          "note": "Unknown phenotype if G78C occurs alone. Nalidixic acid and ciprofloxacin resistance when associated with gyrA mutations",
+          "requires": "gyrA_S83L.W.A.V",
+          "position": 78,
+          "referenceCodon": "GGC"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["R", "I", "W", "L"],
+          "referenceAA": "S",
+          "pmids": "8851598,8851598,21856834-20638608,8524852,25631675,25631675,25631675",
+          "note": "Unknown phenotype if each mutation occurs alone. Nalidixic acid and ciprofloxacin resistance when associated with gyrA mutations",
+          "requires": "gyrA_S83L.W.A.V",
+          "position": 80,
+          "referenceCodon": "AGC"
+        },
+        {
+          "drugs": "Nalidixic acid,Ciprofloxacin",
+          "alternateAA": ["G", "K", "V", "A", "R"],
+          "referenceAA": "E",
+          "pmids": "12654733,8524852,12654733,20638608,20638608",
+          "note": "Unknown phenotype if each mutation occurs alone. Nalidixic acid and ciprofloxacin resistance when associated with gyrA mutations",
+          "requires": "gyrA_S83L.W.A.V",
+          "position": 84,
+          "referenceCodon": "GAA"
+        }
+      ],
+      "sequence": "CCGCACGGCGATAGCGCCTGTTATGAAGCGATG",
+      "locus": "parC",
+      "sourcePath": "escherichia_coli/parC.fsa",
+      "species": "Escherichia coli"
+    },
+    {
+      "accession": "AF052258.1",
+      "annotationPath": "klebsiella/resistens-overview.txt",
+      "id": "klebsiella-gyrA",
+      "startCodon": 80,
+      "annotations": [
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["L"],
+          "referenceAA": "S",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 83,
+          "referenceCodon": "TCC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["F"],
+          "referenceAA": "S",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 83,
+          "referenceCodon": "TCC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["Y"],
+          "referenceAA": "S",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 83,
+          "referenceCodon": "TCC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["I"],
+          "referenceAA": "S",
+          "pmids": "30445211",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 83,
+          "referenceCodon": "TCC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["A"],
+          "referenceAA": "D",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 87,
+          "referenceCodon": "GAC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["N"],
+          "referenceAA": "D",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 87,
+          "referenceCodon": "GAC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["G"],
+          "referenceAA": "D",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 87,
+          "referenceCodon": "GAC"
+        }
+      ],
+      "sequence": "CATGGTGACTCGGCGGTTTATGACACGATCGTC",
+      "locus": "gyrA",
+      "sourcePath": "klebsiella/gyrA.fsa",
+      "species": "Klebsiella pneumoniae"
+    },
+    {
+      "accession": "AF303641.1",
+      "annotationPath": "klebsiella/resistens-overview.txt",
+      "id": "klebsiella-parC",
+      "startCodon": 76,
+      "annotations": [
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["I"],
+          "referenceAA": "S",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 80,
+          "referenceCodon": "AGC"
+        },
+        {
+          "drugs": "ciprofloxacin",
+          "alternateAA": ["K"],
+          "referenceAA": "E",
+          "pmids": "22633335",
+          "note": "Combinations of gyrA-83 and other mutations normally need for high-level fluoroquinolone resistance",
+          "requires": null,
+          "position": 84,
+          "referenceCodon": "GAA"
+        }
+      ],
+      "sequence": "CCGCACGGCGATAGTGCCTGTTATGAAGCGATG",
+      "locus": "parC",
+      "sourcePath": "klebsiella/parC.fsa",
+      "species": "Klebsiella pneumoniae"
+    }
+  ],
+  "revision": "44ce624a806c6d2b70f7e39841a5f9cb4d9010aa"
+}

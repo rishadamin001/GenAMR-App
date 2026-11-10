@@ -1,19 +1,26 @@
+import { findReference } from "./reference-comparison";
 export const primers = {
   gyrA: "F: CGC GTA CTA TAC GCC ATG AAC GTA · R: ACC GTT GAT CAC TTC GGT CAG G · 441 bp · 55°C",
   parC: "QRDR codons 76–86 · research primer validation pending",
   blaSHV: "F: CTT TAT CGG CCC TCA CTC AA · allele confirmation",
   blaTEM: "861 bp · allele confirmation",
 };
-export function simulateTrace(locus: "gyrA" | "parC", mutations: string[]) {
-  const codons = Array.from(
-    { length: 11 },
-    (_, i) => ["GCT", "GGT", "ATC", "TCG"][i % 4],
-  );
+export function simulateTrace(
+  locus: "gyrA" | "parC",
+  mutations: string[],
+  organism = "Escherichia coli",
+) {
+  const reference = findReference(organism, locus);
+  const codons = reference
+    ? reference.sequence.match(/.{3}/g)!
+    : Array.from({ length: 11 }, (_, i) => ["GCT", "GGT", "ATC", "TCG"][i % 4]);
   const start = locus === "gyrA" ? 80 : 76;
   if (locus === "gyrA") {
     codons[3] = mutations.includes("S83L") ? "TTG" : "TCG";
     codons[7] = mutations.includes("D87N") ? "AAC" : "GAC";
-  } else codons[4] = mutations.includes("S80I") ? "ATC" : "AGC";
+  } else if (mutations.includes("S80I"))
+    codons[4] = reference?.species === "Klebsiella pneumoniae" ? "ATT" : "ATC";
+  else if (!reference) codons[4] = "AGC";
   const sequence = codons.join("");
   const channels: Record<string, number[]> = { A: [], C: [], G: [], T: [] };
   for (const channel of "ACGT") {

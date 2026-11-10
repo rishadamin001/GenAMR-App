@@ -11,6 +11,12 @@ import { simulateTrace } from "../src/lib/bioinformatics/sanger-ab1-simulator";
 import { metrics } from "../src/lib/bioinformatics/validation";
 import { validStore } from "../src/lib/data/validate-store";
 import type { Confirmation } from "../src/lib/types";
+import {
+  findReference,
+  compareReference,
+  referenceDatabase,
+  translateCodon,
+} from "../src/lib/bioinformatics/reference-comparison";
 const samples = seed().samples;
 test("invalid local or cloud snapshots cannot enter the workflow", () => {
   assert.equal(validStore(seed()), true);
@@ -90,3 +96,89 @@ test("MBL resists avibactam monotherapy and trace mutation changes correct codon
 });
 test("empty validation has no fabricated accuracy", () =>
   assert.equal(metrics([]).bacc, null));
+
+test("reference snapshot has four 33-base coding windows and exact species matching", () => {
+  assert.equal(referenceDatabase.records.length, 4);
+  for (const r of referenceDatabase.records) {
+    assert.match(r.sequence, /^[ACGT]{33}$/);
+    const result = compareReference(r.sequence, r);
+    assert.equal(result.status, "compared");
+    if (result.status === "compared") {
+      assert.equal(result.identity, 100);
+      assert.equal(result.differences, 0);
+    }
+  }
+  assert.equal(
+    findReference("Klebsiella pneumoniae (ST11)", "gyrA")?.accession,
+    "AF052258.1",
+  );
+  assert.equal(findReference("Acinetobacter baumannii", "gyrA"), undefined);
+  assert.equal(findReference("Klebsiella oxytoca", "gyrA"), undefined);
+});
+
+test("Sanger differences are calculated from bases, with correct coding coordinates", () => {
+  const r = findReference("Escherichia coli", "gyrA")!;
+  const result = compareReference(
+    simulateTrace("gyrA", ["S83L", "D87N"]).sequence,
+    r,
+  );
+  assert.equal(result.status, "compared");
+  if (result.status !== "compared") return;
+  assert.equal(result.differences, 2);
+  assert.equal(result.identity, (31 / 33) * 100);
+  assert.deepEqual(
+    result.rows.filter((r) => r.changed).map((r) => r.label),
+    ["S83L", "D87N"],
+  );
+  assert.deepEqual(
+    result.rows
+      .flatMap((r) => r.bases)
+      .filter((b) => b.changed)
+      .map((b) => b.position),
+    [248, 259],
+  );
+  assert.ok(result.rows[3].annotations.length > 0);
+});
+
+test("species-specific parC uses its actual source codon and amino-acid annotations", () => {
+  const r = findReference("Klebsiella pneumoniae", "parC")!;
+  assert.equal(simulateTrace("parC", [], r.species).codons[4], "AGT");
+  const result = compareReference(
+    simulateTrace("parC", ["S80I"], r.species).sequence,
+    r,
+  );
+  if (result.status !== "compared") return assert.fail("expected comparison");
+  assert.equal(result.differences, 1);
+  assert.equal(result.rows[4].sampleCodon, "ATT");
+  assert.equal(result.rows[4].label, "S80I");
+  assert.ok(
+    result.rows[4].annotations.some(
+      (a) => a.referenceCodon !== result.rows[4].refCodon,
+    ),
+  );
+});
+
+test("ambiguous, invalid, synonymous and uncatalogued calls are not false database hits", () => {
+  const r = findReference("Escherichia coli", "gyrA")!;
+  assert.equal(compareReference("ACGT", r).status, "invalid");
+  assert.equal(compareReference("-".repeat(33), r).status, "invalid");
+  const unknown = compareReference("N".repeat(33), r);
+  if (unknown.status !== "compared")
+    return assert.fail("expected unresolved window");
+  assert.equal(unknown.identity, null);
+  assert.equal(unknown.comparedBases, 0);
+  assert.equal(unknown.differences, 0);
+  assert.ok(
+    unknown.rows.every(
+      (r) => r.kind === "Unresolved" && r.annotations.length === 0,
+    ),
+  );
+  const synonymous = compareReference("CAC" + r.sequence.slice(3), r);
+  if (synonymous.status === "compared")
+    assert.equal(synonymous.rows[0].kind, "Synonymous");
+  const unlisted = compareReference("AAA" + r.sequence.slice(3), r);
+  if (unlisted.status === "compared")
+    assert.equal(unlisted.rows[0].kind, "Uncatalogued substitution");
+  assert.equal(translateCodon("AGT"), "S");
+  assert.equal(translateCodon("ATT"), "I");
+});

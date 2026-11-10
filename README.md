@@ -14,7 +14,7 @@ GenAMR demonstrates how qPCR screening, selective Sanger sequencing, and an inte
 | **1. Collect** | Synthetic sample intake, specimen label and collection timeline |
 | **2. qPCR** | 40-cycle amplification curves, target toggles and Ct controls |
 | **3. Decide** | Fast-track versus targeted-reflex routing, illustrative fees and turnaround |
-| **4. Sanger** | Four-color canvas chromatograms and QRDR mutation toggles |
+| **4. Sanger** | Four-color chromatograms, mutation toggles and a side-by-side PointFinder reference comparison with highlighted differences |
 | **5. Report** | Empirical-therapy mismatch alerts, 16-drug illustrative matrix and printable report |
 | **Validation** | Phenotypic AST reconciliation and simulated model-version updates |
 | **Surveillance** | Eight-division synthetic summaries and CSV/JSON exports |
@@ -90,6 +90,8 @@ Read the [verification record](docs/verification.md) for results and limitations
 
 ## Documentation
 
+- [Sanger database comparison](docs/sanger-reference-comparison.md) — reference sources, highlighted differences and comparison scope
+
 - [Documentation index](docs/README.md) — find the right guide
 - [Demo walkthrough](docs/demo-guide.md) — six scenarios and interactive checks
 - [Implementation scope](docs/implementation-scope.md) — implemented behavior and boundaries
@@ -97,3 +99,4 @@ Read the [verification record](docs/verification.md) for results and limitations
 - [Data and scientific scope](docs/data-and-scientific-scope.md) — research limitations and cloud setup
 - [Verification record](docs/verification.md) — build, test and deployment evidence
 - [Contributing](CONTRIBUTING.md) — development and review expectations
+

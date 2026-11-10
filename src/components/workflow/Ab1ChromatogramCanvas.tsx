@@ -1,16 +1,26 @@
 import { useEffect, useRef } from "react";
 import { simulateTrace } from "@/lib/bioinformatics/sanger-ab1-simulator";
+import {
+  findReference,
+  compareReference,
+} from "@/lib/bioinformatics/reference-comparison";
 export function Ab1ChromatogramCanvas({
   locus,
   mutations,
   zoom,
+  organism = "Escherichia coli",
+  selectedCodon,
 }: {
   locus: "gyrA" | "parC";
   mutations: string[];
   zoom: number;
+  organism?: string;
+  selectedCodon?: number;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const trace = simulateTrace(locus, mutations);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const trace = simulateTrace(locus, mutations, organism);
+  const reference = findReference(organism, locus);
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
@@ -28,8 +38,19 @@ export function Ab1ChromatogramCanvas({
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "#fafcfc";
     ctx.fillRect(0, 0, width, height);
-    const t = simulateTrace(locus, mutations),
+    const t = simulateTrace(locus, mutations, organism),
       scale = width / (t.sequence.length * 12);
+    const record = findReference(organism, locus);
+    const comparison = record && compareReference(t.sequence, record);
+    if (comparison?.status === "compared") {
+      comparison.rows.forEach((row, i) => {
+        if (row.changed || row.position === selectedCodon) {
+          ctx.fillStyle =
+            row.position === selectedCodon ? "#ccece4" : "#fff0cc";
+          ctx.fillRect(i * 36 * scale, 0, 36 * scale, height);
+        }
+      });
+    }
     const colors: Record<string, string> = {
       A: "#10b981",
       C: "#3b82f6",
@@ -68,10 +89,24 @@ export function Ab1ChromatogramCanvas({
       start: drawStarted,
       end: performance.now(),
     });
-  }, [locus, mutations, zoom]);
+  }, [locus, mutations, zoom, organism, selectedCodon]);
+  useEffect(() => {
+    if (selectedCodon === undefined || !scrollRef.current) return;
+    const x = ((selectedCodon - trace.start + 0.5) / 11) * 792 * zoom;
+    scrollRef.current.scrollLeft = Math.max(
+      0,
+      x - scrollRef.current.clientWidth / 2,
+    );
+  }, [selectedCodon, trace.start, zoom]);
   return (
     <>
-      <div className="trace-scroll">
+      <div
+        className="trace-scroll"
+        ref={scrollRef}
+        tabIndex={0}
+        role="region"
+        aria-label="Scrollable Sanger trace"
+      >
         <canvas
           ref={ref}
           aria-label={`${locus} synthetic four-color Sanger chromatogram`}
@@ -80,9 +115,18 @@ export function Ab1ChromatogramCanvas({
       </div>
       <p className="mono">Sample: {trace.codons.join(" ")}</p>
       <p className="muted">
-        Synthetic flanking sequence • A green / C blue / G charcoal / T red •
-        Q30–Q42 • not an ABIF file parser
+        {reference
+          ? `Synthetic trace · PointFinder ${reference.accession} template`
+          : "Synthetic flanking sequence · no species-matched reference"}{" "}
+        • A green / C blue / G charcoal / T red • Q30–Q42 • not an ABIF file
+        parser
       </p>
+      {selectedCodon !== undefined && (
+        <p className="trace-selection" role="status">
+          Inspecting {locus} codon {selectedCodon} ·{" "}
+          {trace.codons[selectedCodon - trace.start]} · highlighted in teal
+        </p>
+      )}
     </>
   );
 }
